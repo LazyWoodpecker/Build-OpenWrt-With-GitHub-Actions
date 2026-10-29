@@ -1,6 +1,6 @@
 # Build OpenWrt With GitHub Actions
 
-![GitHub](https://img.shields.io/badge/license-MIT-blue.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/hhai93/Build-OpenWrt-With-GitHub-Actions)
+![GitHub](https://img.shields.io/badge/license-MIT-blue.svg) ![GitHub last commit](https://img.shields.io/github/last-commit/LazyWoodpecker/Build-OpenWrt-With-GitHub-Actions)
 
 This repository automates building custom OpenWrt firmware using GitHub Actions, inspired by [P3TERX/Actions-OpenWrt](https://github.com/P3TERX/Actions-OpenWrt). It supports scheduled builds, firmware uploads to GitHub Releases. The setup is highly customizable and user-friendly.
 
@@ -12,7 +12,6 @@ This repository automates building custom OpenWrt firmware using GitHub Actions,
 -  **Firmware Upload**: Publishes firmware files to GitHub Releases and Artifacts.
 -  **Cache**: Use cache to reduce time between builds.
 -  **Customizable**: Adjust source, branch, config, and DIY scripts easily.
--  **SSH Access**: Interactive `make menuconfig` via SSH for advanced configuration.
 
 ---
 
@@ -35,8 +34,6 @@ This repository automates building custom OpenWrt firmware using GitHub Actions,
    -  Go to **Settings > Secrets and variables > Actions > Secrets**.
    -  Add:
      - `RELEASES_TOKEN`: GitHub Personal Access Token.
-     - `TELEGRAM_TOKEN`: Telegram bot token.
-     - `TELEGRAM_ID`: Telegram chat ID (use [@userinfobot](https://t.me/userinfobot)).
 
 3. **Customize Workflow**:
    - Edit `.github/workflows/build-openwrt.yml`:
@@ -49,41 +46,12 @@ This repository automates building custom OpenWrt firmware using GitHub Actions,
    - Modify `diy-part1.sh` (e.g., add feeds) and `diy-part2.sh` (e.g., change IP).
 
 4. **Add Configuration**:
-   -  Place `.config` in the repository root. Generate via `make menuconfig` locally or use SSH (see below).
+   -  Place `.config` in the repository root. Generate via `make menuconfig` locally.
    -  Ensure `.config` matches `REPO_URL` to avoid build failures.
 
 5. **Trigger Build**:
-   -  Manually trigger via **Actions > Build OpenWrt > Run workflow**(set `SSH connection to Actions` to `true` for SSH access).
+   -  Manually trigger via **Actions > Build OpenWrt > Run workflow**.
    -  Scheduled builds run per `cron` schedule.
-
----
-
-## 🔐 SSH Access Setup
-
-🔧 Use SSH to debug or run `make menuconfig` interactively:
-
-1. **Trigger Workflow with SSH**:
-   -  In the **Actions**tab, select **Build OpenWrt**and click **Run workflow**.
-   -  Set `SSH connection to Actions` to `true` in the form.
-   -  Click **Run workflow**.
-
-2. **Get SSH Command**:
-   -  Open the running workflow’s **build**job in the **Actions**tab.
-   -  Expand the **SSH connection to Actions**step.
-   -  Copy the `SSH` command (e.g., `ssh 123abc@ny4.tmate.io`) or note the `Web` URL.
-
-3. **Connect via SSH**:
-   -  In a terminal, run the SSH command (e.g., `ssh 123abc@ny4.tmate.io`).
-   -  Alternatively, open the `Web` URL (e.g., `https://tmate.io/t/123abc`) in a browser.
-   -  Interact with the runner (e.g., `cd openwrt; make menuconfig` after cloning).
-
-4. **Exit SSH**:
-   -  Run `exit` to close the SSH session and resume the workflow.
-   -  Keep the session open for debugging while the workflow runs (use `detached: true` for background SSH).
-
-**Tips**:
-- Press `Ctrl+C` in the log viewer if the SSH command doesn’t appear.
-- Save `.config` to `$GITHUB_WORKSPACE` (e.g., `cp openwrt/.config $GITHUB_WORKSPACE/.config`).
 
 ---
 
@@ -92,7 +60,12 @@ This repository automates building custom OpenWrt firmware using GitHub Actions,
 - **Build Fails**: Check Actions logs. Verify `.config` compatibility with `REPO_URL`. Run `make V=s` locally to debug.
 - **No Release**: Ensure `RELEASES_TOKEN` has `public_repo` scope.
 - **Storage Full**: Cleanup retains 30 days of runs and 5 releases. Reduce `retain_days` or `keep_latest` if needed.
-- **SSH Issues**: If `tmate` fails, check logs for SSH command or URL.
+
+---
+
+## ⚠️ Notes
+
+- **SSH access**: The original version allowed SSH access to job using tmate public servers, but those servers were taken down in 2025, so I commented out the code.  --LazyWoodpecker
 
 ---
 
