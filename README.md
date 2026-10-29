@@ -63,7 +63,7 @@ This repository automates building custom OpenWrt firmware using GitHub Actions,
 
 ---
 
-## ⚠️ Notes
+## 📝 Notes
 
 - **SSH access**: The original version allowed SSH access to job using tmate public servers, but those servers were taken down in 2025, so I commented out the code.  --LazyWoodpecker
 
