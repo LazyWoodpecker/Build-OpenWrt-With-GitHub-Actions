@@ -252,11 +252,11 @@ jobs:
           token: ${{ github.token }}
           repository: ${{ github.repository }}
           retain_days: 30
-          keep_minimum_runs: ${KEEP_RUNS:-5}
+          keep_minimum_runs: ${{ env.KEEP_RUNS }}
 
       - name: Delete old Releases
         uses: dev-drprasad/delete-older-releases@master
         with:
-          keep_latest: ${KEEP_RELEASES:-2}
+          keep_latest: ${{ env.KEEP_RELEASES }}
         env:
           GITHUB_TOKEN: ${{ secrets.RELEASES_TOKEN }}
